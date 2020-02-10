@@ -56,6 +56,9 @@ class Menu:
         self.subIcon = '+'
         self.actIcon = '-'
 
+        # This
+        self.subIndicator = '->'
+
         # This will be printed between the icon and the name of the option
         self.subSeparator = '|'
         self.actSeparator = '|'
@@ -63,6 +66,10 @@ class Menu:
         # Message to be displayed when expecting user input
         self.inputMessage = 'Please type an option and press enter: '
         self.invalidOptionMessage = 'Invalid option, please try again :('
+
+    def __len__(self):
+        # Returns the number of options there is in the menu
+        return len(self.options)
 
     def valSelfOptions(self, string):
         for opt in self.options:
