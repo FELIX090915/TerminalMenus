@@ -57,7 +57,7 @@ class Menu:
         self.actIcon = '-'
 
         # This
-        self.subIndicator = '->'
+        self.subIndicator = ' ->'
 
         # This will be printed between the icon and the name of the option
         self.subSeparator = '|'
@@ -70,6 +70,9 @@ class Menu:
     def __len__(self):
         # Returns the number of options there is in the menu
         return len(self.options)
+
+    def __repr__(self):
+        return f'[Menu label:{self.label}, len: {len(self.options)}]'
 
     def valSelfOptions(self, string):
         for opt in self.options:
@@ -109,7 +112,7 @@ class Menu:
                 print('[WARNING] No module named os')
                 print('[WARNING] Unable to clear the screen')
                 print('[WARNING] Probably there is an error with \
-                      import names or the import is missing')
+import names or the import is missing')
 
         # Print title if there is one
         if self.title != '':
@@ -119,7 +122,8 @@ class Menu:
         # Print all the options
         for opt in self.options:
             if isinstance(opt, Menu):
-                print(self.subIcon, opt.label, sep=self.subSeparator)
+                print(self.subIcon, self.subSeparator, opt.label,
+                      self.subIndicator, sep='')
             else:
                 print(self.actIcon, opt, sep=self.actSeparator)
         print('')  # Used to jump one line
@@ -153,7 +157,7 @@ class Menu:
                 except NameError:
                     print('[ERROR] Could not run the specified menu function')
                     print(f'[ERROR] Either {self.options[selected]} is not a \
-                          function or the arguments are wrong')
+function or the arguments are wrong')
                     print(f'[ERROR] Arguments: {self.menuFuncArgs}')
                     raise
             else:
@@ -174,13 +178,30 @@ class Menu:
         while running:
             running = menu.act()
 
+    # This method is used to check everything is ok, and if it's not ok
+    # this will make sure it fails when compiling and not at runtime
     @staticmethod
     def checkInit(options, label, title='', clearScr=False,
                   exitKey='exit', menuFuncArgs=[], caseSensible=False):
+
         # Check if options is a dictionary
         if not isinstance(options, dict):
             print('[ERROR] Expected dictionary in the \'options\' parameter')
             raise Exception('Parameter \'options\' is not of type \'dict\'')
+
+        # Check that the items in the options dict are callable
+        for key, val in options.items():
+            if not callable(val):
+                # Check if the value is a menu to raise the correct exception
+                if isinstance(key, Menu):
+                    if val is not None and not callable(val):
+                        t = type(val)
+                        raise Exception(f'Submenu ({key}) in options\
+doesn\'t have a callable method in its value,\
+the value is: ({val}) of type: ({t})')
+                else:
+                    raise Exception(f'Options key: ({key}), with value: ({val}),\
+is not callable')
 
         # Check if label is string
         if not isinstance(label, str):
@@ -196,11 +217,11 @@ class Menu:
         if not isinstance(clearScr, bool):
             print('[ERROR] Expected a boolean in the \'clearScr\' parameter')
             raise Exception('Parameter \'clearScr\' is \
-                             not of type \'boolean\'')
+not of type \'boolean\'')
 
         # Check if caseSensible is boolean
         if not isinstance(caseSensible, bool):
             print('[ERROR] Expected a boolean in the caseSensible parameter')
             raise Exception('Parameter \'caseSensible\' \
-                             is not of type \'boolean\'')
+is not of type \'boolean\'')
         return True
