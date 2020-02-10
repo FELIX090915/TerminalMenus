@@ -161,7 +161,7 @@ function or the arguments are wrong')
                     print(f'[ERROR] Arguments: {self.menuFuncArgs}')
                     raise
             else:
-                print('Buffering')
+                # If there is not an specified function use the default one
                 Menu.menuBuffer(selected)
                 return True
         # If its not the exit key or other menu then run the
