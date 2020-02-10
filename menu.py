@@ -162,7 +162,7 @@ function or the arguments are wrong')
                     raise
             else:
                 # If there is not an specified function use the default one
-                Menu.menuBuffer(selected)
+                Menu.buffer(selected)
                 return True
         # If its not the exit key or other menu then run the
         # function associated with the key
@@ -172,11 +172,15 @@ function or the arguments are wrong')
 
     # ? Maybe there is a better name for this function
     @staticmethod
-    def menuBuffer(menu):
+    def buffer(menu):
         """ Runs continuously a menu until the exit key is typed"""
         running = True
         while running:
             running = menu.act()
+
+    @staticmethod
+    def bufferOneTime(menu):
+        menu.act()
 
     # This method is used to check everything is ok, and if it's not ok
     # this will make sure it fails when compiling and not at runtime
