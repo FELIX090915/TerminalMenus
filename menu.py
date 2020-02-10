@@ -1,4 +1,6 @@
 # Author: Alejandro Gonzalez Felix
+# Email: felix090915@gmail.com
+# Github: https://github.com/FELIX090915
 from os import system
 
 
@@ -23,6 +25,11 @@ class Menu:
             caseSensible {bool} -- If true the user needs to type the options
                                    as they are written (default: {False})
         """
+
+        # Validation of data
+        Menu.checkInit(options, label, title='', clearScr=False,
+                       exitKey='exit', menuFuncArgs=[], caseSensible=False)
+
         # Saves the list of functions in the instance object
         self.options = options
 
@@ -159,3 +166,34 @@ class Menu:
         running = True
         while running:
             running = menu.act()
+
+    @staticmethod
+    def checkInit(options, label, title='', clearScr=False,
+                  exitKey='exit', menuFuncArgs=[], caseSensible=False):
+        # Check if options is a dictionary
+        if not isinstance(options, dict):
+            print('[ERROR] Expected dictionary in the \'options\' parameter')
+            raise Exception('Parameter \'options\' is not of type \'dict\'')
+
+        # Check if label is string
+        if not isinstance(label, str):
+            print('[ERROR] Expected a string in the \'label\' parameter')
+            raise Exception('Parameter \'label\' is not of type \'string\'')
+
+        # Check if title is string
+        if not isinstance(title, str):
+            print('[ERROR] Expected a string in the \'title\' parameter')
+            raise Exception('Parameter \'title\' is not of type \'string\'')
+
+        # Check if clearScr is boolean
+        if not isinstance(clearScr, bool):
+            print('[ERROR] Expected a boolean in the \'clearScr\' parameter')
+            raise Exception('Parameter \'clearScr\' is \
+                             not of type \'boolean\'')
+
+        # Check if caseSensible is boolean
+        if not isinstance(caseSensible, bool):
+            print('[ERROR] Expected a boolean in the caseSensible parameter')
+            raise Exception('Parameter \'caseSensible\' \
+                             is not of type \'boolean\'')
+        return True
